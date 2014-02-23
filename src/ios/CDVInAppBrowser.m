@@ -32,6 +32,7 @@
 #define    TOOLBAR_HEIGHT 44.0
 #define    LOCATIONBAR_HEIGHT 21.0
 #define    FOOTER_HEIGHT ((TOOLBAR_HEIGHT) + (LOCATIONBAR_HEIGHT))
+#define     UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 #pragma mark CDVInAppBrowser
 
@@ -412,6 +413,8 @@
 @implementation CDVInAppBrowserViewController
 
 @synthesize currentURL;
+    
+
 
 - (id)initWithUserAgent:(NSString*)userAgent prevUserAgent:(NSString*)prevUserAgent browserOptions: (CDVInAppBrowserOptions*) browserOptions
 {
@@ -426,6 +429,16 @@
 
     return self;
 }
+    
+    - (unsigned) toInt:(NSString*) color
+    {
+        unsigned result = 0;
+        NSScanner *scanner = [NSScanner scannerWithString:color];
+        
+        [scanner setScanLocation:1]; // bypass '#' character
+        [scanner scanHexInt:&result];
+        return result;
+    }
 
 - (void)createViews
 {
@@ -493,6 +506,9 @@
     self.toolbar.multipleTouchEnabled = NO;
     self.toolbar.opaque = NO;
     self.toolbar.userInteractionEnabled = YES;
+    self.toolbar.barTintColor =  UIColorFromRGB([self toInt: _browserOptions.toolbarbackground]);
+    self.toolbar.tintColor =  UIColorFromRGB([self toInt: _browserOptions.toolbarforecolor]);
+    
 
     CGFloat labelInset = 5.0;
     float locationBarY = toolbarIsAtBottom ? self.view.bounds.size.height - FOOTER_HEIGHT : self.view.bounds.size.height - LOCATIONBAR_HEIGHT;
@@ -543,6 +559,8 @@
     NSLog(@"Setting the WebView's frame to %@", NSStringFromCGRect(frame));
     [self.webView setFrame:frame];
 }
+    
+
 
 - (void)setCloseButtonTitle:(NSString*)title
 {
@@ -875,6 +893,9 @@
         self.suppressesincrementalrendering = NO;
         self.hidden = NO;
         self.disallowoverscroll = NO;
+        
+        self.toolbarbackground = @"#43cee6";
+        self.toolbarforecolor = @"#ffffff";
     }
 
     return self;
