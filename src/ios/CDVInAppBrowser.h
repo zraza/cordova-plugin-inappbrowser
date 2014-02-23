@@ -44,6 +44,9 @@
 @property (nonatomic, assign) BOOL toolbar;
 @property (nonatomic, copy) NSString* closebuttoncaption;
 @property (nonatomic, copy) NSString* toolbarposition;
+    
+@property (nonatomic, copy) NSString* toolbarbackground;
+@property (nonatomic, copy) NSString* toolbarforecolor;
 
 @property (nonatomic, copy) NSString* presentationstyle;
 @property (nonatomic, copy) NSString* transitionstyle;
@@ -82,6 +85,7 @@
 @property (nonatomic) NSURL* currentURL;
 
 - (void)close;
+
 - (void)navigateTo:(NSURL*)url;
 - (void)showLocationBar:(BOOL)show;
 - (void)showToolBar:(BOOL)show : (NSString *) toolbarPosition;
