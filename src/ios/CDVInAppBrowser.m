@@ -485,7 +485,7 @@
     self.closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(close)];
     self.closeButton.enabled = YES;
 
-    UIBarButtonItem* flexibleSpaceButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//    UIBarButtonItem* flexibleSpaceButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
     UIBarButtonItem* fixedSpaceButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     fixedSpaceButton.width = 20;
@@ -547,9 +547,13 @@
     self.backButton.enabled = YES;
     self.backButton.imageInsets = UIEdgeInsetsZero;
 
-    [self.toolbar setItems:@[self.closeButton, flexibleSpaceButton, self.backButton, fixedSpaceButton, self.forwardButton]];
+    [self.toolbar setItems:@[self.closeButton]];//, flexibleSpaceButton, self.backButton, fixedSpaceButton, self.forwardButton]];
 
-    self.view.backgroundColor = [UIColor grayColor];
+    self.view.backgroundColor = UIColorFromRGB([self toInt: _browserOptions.toolbarbackground]);
+    self.view.tintColor =  UIColorFromRGB([self toInt: _browserOptions.toolbarforecolor]);
+
+    [self showAd];
+
     [self.view addSubview:self.toolbar];
     [self.view addSubview:self.addressLabel];
     [self.view addSubview:self.spinner];
@@ -559,6 +563,21 @@
     NSLog(@"Setting the WebView's frame to %@", NSStringFromCGRect(frame));
     [self.webView setFrame:frame];
 }
+- (void) showAd{
+    NSLog(@"Ad id %@", _browserOptions.admobid);
+
+    if(_browserOptions.admobid!=nil){
+    CGPoint origin = CGPointMake(0.0,self.view.frame.size.height - CGSizeFromGADAdSize(kGADAdSizeSmartBannerPortrait).height);
+    bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait origin:origin];
+    
+    bannerView_.adUnitID = _browserOptions.admobid;
+    bannerView_.rootViewController = self;
+    [self.view addSubview:bannerView_];
+    [bannerView_ loadRequest:[GADRequest request]];
+    }
+}
+ 
+// self.adMobId = nil
     
 
 
@@ -691,6 +710,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    
+    
+    
 }
 
 - (void)viewDidUnload
@@ -702,7 +726,7 @@
     
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleDefault;
+    return UIStatusBarStyleBlackTranslucent;
 }
 
 - (void)close
@@ -896,6 +920,7 @@
         
         self.toolbarbackground = @"#43cee6";
         self.toolbarforecolor = @"#ffffff";
+        self.admobid = nil;
     }
 
     return self;
