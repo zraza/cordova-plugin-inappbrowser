@@ -22,6 +22,12 @@
 #import <Cordova/CDVScreenOrientationDelegate.h>
 #import <Cordova/CDVWebViewDelegate.h>
 
+#import "GADBannerView.h"
+
+#import "GADInterstitial.h"
+
+
+
 @class CDVInAppBrowserViewController;
 
 @interface CDVInAppBrowser : CDVPlugin {
@@ -47,6 +53,8 @@
     
 @property (nonatomic, copy) NSString* toolbarbackground;
 @property (nonatomic, copy) NSString* toolbarforecolor;
+    
+@property (nonatomic, copy) NSString* admobid;
 
 @property (nonatomic, copy) NSString* presentationstyle;
 @property (nonatomic, copy) NSString* transitionstyle;
@@ -70,6 +78,9 @@
     NSInteger _userAgentLockToken;
     CDVInAppBrowserOptions *_browserOptions;
     CDVWebViewDelegate* _webViewDelegate;
+    GADBannerView *bannerView_;
+    
+
 }
 
 @property (nonatomic, strong) IBOutlet UIWebView* webView;
