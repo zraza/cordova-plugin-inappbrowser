@@ -717,6 +717,11 @@
     
 }
 
+- (BOOL)prefersStatusBarHidden {
+    
+    return YES;
+}
+
 - (void)viewDidUnload
 {
     [self.webView loadHTMLString:nil baseURL:nil];
